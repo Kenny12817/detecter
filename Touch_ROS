@@ -1,0 +1,27 @@
+#include <ros.h>
+#include <std_msgs/UInt16.h>
+
+ros::NodeHandle nh;
+
+std_msgs::UInt16 int_msg;
+ros::Publisher detector("detector", &int_msg);
+
+int analogPin = A0; 
+double val = 0;
+
+void setup()
+{
+  nh.initNode();
+  nh.getHardware()->setBaud(57600);
+  nh.advertise(detector);
+
+
+}
+
+void loop() {
+  val = analogRead(analogPin);   
+  int_msg.data = val;
+  detector.publish( &int_msg );
+  nh.spinOnce();
+  delay(50);
+}
