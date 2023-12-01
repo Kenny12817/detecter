@@ -1,0 +1,20 @@
+import rospy
+form std_msgs.msg import UInt16
+
+data = none
+
+def callback(msg):
+	global data
+	data = msg.data
+
+if __name__ == '__main__':
+	rospy.init_node('test')
+	rospy.loginfo("hello")
+	_topic_image = "/detecter"
+	rospy.Subscriber(_topic_image, UInt16, callback)
+	rospy.wait_for_message(_topic_image,UInt16)
+
+	rate=rospy.Rate(10)
+	while not rospy.is_shutdown():
+		rate.sleep()
+		print(data, "pressing" if data < 950 else "no")
